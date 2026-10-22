@@ -3,9 +3,10 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phase 3 complete (engine, tests, service layer, API smoke-tested). Phase 4 (frontend) next.
+Phase 4 complete (frontend built and browser-tested); Phase 5 (Vercel deploy) next.
 
 ## Done
+- Phase 4: proxy.ts signed-cookie gate (APP_PASSWORD), /login, / (dashboard), /runs/[id], /exceptions (+ add E3 flag form), /skus/[code] (SVG charts), GET /api/skus/[code]. Browser-tested with a throwaway process-only password: login, run engine, approve SKU001, pre-placement PROCEED, SKU page. `npm run build`, eslint, tsc, 15 tests all clean. Test rows deleted afterwards (DB has 0 runs).
 - Phase 3: engine (src/lib/engine) + 15 Vitest tests passing (4 required examples + rules); service layer (src/lib/services); all 10 API routes; zod validation + { error: { code, message } } + JSON logs.
 - API smoke test (curl, local dev :3100) all passed: health 200; POST/GET runs 201/200, bad date/json 400, bad id 400, missing 404; recommendations filters 200, bad flag 400; exceptions 200; decision approve/override 201, no-qty approve 422, missing newQty 400, missing reason 400, repeat 409, unknown 404; preplacement 409 if pending, 201 PROCEED, HOLD after a new event flag; flags 201/400/404; metrics 200. Smoke rows deleted afterwards.
 - First real run (2026-10-19, units basis): 5 STOCKOUT_RISK, 8 OK, 2 OVERSTOCK, 0 exceptions (rate 0% vs expected 15-20%: data has no E1/E3/E4 triggers; E2/E5/E6 cannot run).
@@ -16,14 +17,16 @@ Phase 3 complete (engine, tests, service layer, API smoke-tested). Phase 4 (fron
 - Wrote scripts/inspect-data.ts and ran it; proposed src/config/columnMap.ts.
 
 ## In progress
-Starting Phase 4. A dev server may be running on :3100 (`npx next dev -p 3100`).
+Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. Phase 4: proxy.ts password gate (Next 16 uses proxy.ts, not middleware), /login, pages /, /runs/[id], /exceptions, /skus/[code].
-2. User must set APP_PASSWORD in .env.local before login works.
-3. Phase 5 Vercel deploy; Phase 6 CI; Phase 7 skills + README.
+1. Phase 5: link + deploy to Vercel (MCP/CLI); set DATABASE_URL, DIRECT_URL, APP_PASSWORD in Vercel (user adds values).
+2. Phase 6: .github/workflows/ci.yml (npm ci, lint, test, build).
+3. Phase 7: skills/*.md, rubrics, full README.
 
 ## Decisions made
+- UI is light-theme only (globals.css); client components fetch the API with loading/error states; Suspense wrappers required by cacheComponents.
+- route() wrapper rethrows Next control-flow errors (digest).
 - Engine surge-confirmed = AVG4 > 1.2D AND latest week AND previous week each > 1.2D (assumption for Raghav).
 - Next 16: no `export const dynamic` in route handlers (cacheComponents on); params are Promises.
 - Prisma 7: `directUrl` no longer in schema.prisma; migrations use DIRECT_URL via prisma.config.ts, app uses DATABASE_URL via a driver adapter.
@@ -36,7 +39,7 @@ Starting Phase 4. A dev server may be running on :3100 (`npx next dev -p 3100`).
 ## Waiting on me
 - Branch protection on `main` needs GitHub Pro or public repo.
 - Reset Neon neondb_owner password (it was pasted in chat), then update .env.local.
-- APP_PASSWORD needed before Phase 4 login.
+- APP_PASSWORD must be set in .env.local (and Vercel) or login returns 503 NOT_CONFIGURED.
 
 ## Env vars (names only)
 - DATABASE_URL: set (.env.local)

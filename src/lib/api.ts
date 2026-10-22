@@ -23,6 +23,8 @@ export function route(name: string, handler: Handler): Handler {
     try {
       return await handler(req, ctx);
     } catch (e) {
+      // Next.js control-flow errors (e.g. the dynamic-rendering bail-out) carry a digest: let them through.
+      if (typeof e === "object" && e !== null && "digest" in e) throw e;
       if (e instanceof ApiError) return errorResponse(e.status, e.code, e.message);
       if (e instanceof ZodError) {
         return errorResponse(400, "VALIDATION_ERROR", e.issues.map((i) => `${i.path.join(".") || "body"}: ${i.message}`).join("; "));
