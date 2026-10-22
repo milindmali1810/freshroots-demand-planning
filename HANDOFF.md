@@ -3,7 +3,7 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phase 2 — mapping APPROVED (all six answers). Neon project created. WAITING on user to put DATABASE_URL + DIRECT_URL into .env.local.
+Phase 2 — ingest/check scripts written; BLOCKED: .env.local has empty values (auto-mode blocked me from writing secrets).
 
 ## Done
 - Env checked: node v24.21.0, npm 11.19.0, git 2.55.0, gh 2.63.2, vercel 63.1.2; Neon MCP available.
@@ -15,7 +15,7 @@ Phase 2 — mapping APPROVED (all six answers). Neon project created. WAITING on
 Presenting the mapping. Files touched: scripts/inspect-data.ts, src/config/columnMap.ts.
 
 ## Next 3 actions
-1. Once .env.local has the URLs: `npx prisma migrate dev --name init`.
+1. Once .env.local has DATABASE_URL/DIRECT_URL/DATA_DIR: `npx prisma migrate dev --name init`, then `npx tsx scripts/ingest.ts` and `npx tsx scripts/check-data.ts`.
 2. Write schema.prisma from mapping; `prisma migrate dev --name init`; write scripts/ingest.ts and check-data.ts.
 3. Phase 3: engine + the 4 required Vitest tests first, then service layer and API.
 
