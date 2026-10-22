@@ -1,7 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// Prisma 7: connection URLs live in prisma.config.ts (DIRECT_URL for migrations).
+// Schema follows docs/BUILD_SPEC.md B2, adjusted to the approved column mapping (src/config/columnMap.ts).
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +8,193 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum RunStatus {
+  COMPLETED
+  HALTED
+}
+
+enum Flag {
+  STOCKOUT_RISK
+  OVERSTOCK
+  HIGH_DEMAND
+  WATCH
+  OK
+  EXCEPTION
+}
+
+enum RecStatus {
+  PENDING
+  APPROVED
+  OVERRIDDEN
+  REJECTED
+}
+
+enum DecisionAction {
+  APPROVE
+  OVERRIDE
+  REJECT
+}
+
+enum CheckResult {
+  PROCEED
+  HOLD
+}
+
+model Sku {
+  code                   String   @id
+  name                   String
+  category               String
+  isPerishable           Boolean
+  standardReorderQty     Int? // reference only; engine uses Q_std = 4 x AVG12
+  unitOfMeasure          String?
+  unitPrice              Decimal? @db.Decimal(12, 2)
+  casePack               Int?
+  leadTimeWeeks          Int?
+  primaryDistributorCode String?
+
+  primaryDistributor Distributor?        @relation(fields: [primaryDistributorCode], references: [code])
+  sales              WeeklySale[]
+  inventory          InventorySnapshot[]
+  eventFlags         EventFlag[]
+  recommendations    Recommendation[]
+  exceptions         RecException[]
+}
+
+model Distributor {
+  code   String  @id
+  name   String
+  region String
+  status String?
+  tier   String?
+
+  skus       Sku[]
+  eventFlags EventFlag[]
+}
+
+// Sales are per SKU only: the source file has no distributor column.
+model WeeklySale {
+  id        Int      @id @default(autoincrement())
+  skuCode   String
+  weekStart DateTime @db.Date // Monday
+  units     Int
+
+  sku Sku @relation(fields: [skuCode], references: [code])
+
+  @@unique([skuCode, weekStart])
+  @@index([skuCode, weekStart])
+}
+
+model InventorySnapshot {
+  id       Int      @id @default(autoincrement())
+  skuCode  String
+  asOfDate DateTime @db.Date
+  location String?
+  onHand   Int
+  onOrder  Int? // not in source data; null means "on-order unavailable"
+
+  sku Sku @relation(fields: [skuCode], references: [code])
+
+  @@unique([skuCode, asOfDate])
+}
+
+// One row per festival-flagged month (calendar.csv has months, not exact dates).
+model Festival {
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  region    String?
+
+  @@unique([startDate, endDate])
+}
+
+model EventFlag {
+  id              Int      @id @default(autoincrement())
+  skuCode         String?
+  distributorCode String?
+  startDate       DateTime @db.Date
+  endDate         DateTime @db.Date
+  note            String
+  createdBy       String
+  createdAt       DateTime @default(now())
+
+  sku         Sku?         @relation(fields: [skuCode], references: [code])
+  distributor Distributor? @relation(fields: [distributorCode], references: [code])
+}
+
+model Run {
+  id             Int       @id @default(autoincrement())
+  runDate        DateTime  @db.Date
+  status         RunStatus
+  haltReason     String?
+  configSnapshot Json
+  totals         Json
+  createdAt      DateTime  @default(now())
+
+  recommendations Recommendation[]
+  exceptions      RecException[]
+}
+
+model Recommendation {
+  id                Int       @id @default(autoincrement())
+  runId             Int
+  skuCode           String
+  flag              Flag
+  avg4              Float
+  avg12             Float
+  festivalFactor    Float
+  demandRate        Float
+  inventoryPosition Int
+  weeksOfCover      Float
+  qty               Int?
+  orderValue        Decimal?  @db.Decimal(14, 2)
+  reason            String
+  status            RecStatus @default(PENDING)
+
+  run                Run                 @relation(fields: [runId], references: [id])
+  sku                Sku                 @relation(fields: [skuCode], references: [code])
+  decisions          Decision[]
+  preplacementChecks PreplacementCheck[]
+
+  @@index([runId, flag])
+}
+
+model RecException {
+  id      Int    @id @default(autoincrement())
+  runId   Int
+  skuCode String
+  code    String // E1..E7
+  detail  String
+
+  run Run @relation(fields: [runId], references: [id])
+  sku Sku @relation(fields: [skuCode], references: [code])
+
+  @@index([runId, code])
+}
+
+model Decision {
+  id               Int            @id @default(autoincrement())
+  recommendationId Int
+  action           DecisionAction
+  newQty           Int?
+  reasonCode       String
+  note             String?
+  decidedBy        String
+  decidedAt        DateTime       @default(now())
+
+  recommendation Recommendation @relation(fields: [recommendationId], references: [id])
+}
+
+model PreplacementCheck {
+  id               Int         @id @default(autoincrement())
+  recommendationId Int
+  checkedAt        DateTime    @default(now())
+  result           CheckResult
+  triggers         Json
+  ownerDecision    String? // PROCEED | REDUCE | CANCEL
+  ownerNote        String?
+
+  recommendation Recommendation @relation(fields: [recommendationId], references: [id])
 }
