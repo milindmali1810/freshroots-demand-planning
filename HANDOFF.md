@@ -3,9 +3,10 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phases 4, 6, 7 done. Phase 5: all 3 env vars set in Vercel; preview verified (health ok, login rejects wrong password, gate redirects/401s). WAITING on user to log in on the preview and run engine + approve one (I may not enter the real password).
+BUILD COMPLETE on dev. Preview smoke-tested end to end by the user (login, run engine, approve). Only open item: merge dev -> main (needs user OK, checkpoint A2.5).
 
 ## Done
+- Preview smoke test by user on Vercel: login ok, Run #3 (15 rows, same as local), SKU001 approved. Test rows deleted afterwards (DB: 0 runs; 15 SKUs, 240 sales, 15 inventory intact).
 - APP_PASSWORD added in Vercel (Production+Preview, Secret). Preview https://freshroots-demand-planning-7dwd5bafk-milindmali1810s-projects.vercel.app: /api/health ok, POST /api/login wrong pw -> 401 WRONG_PASSWORD (proves var is set), / -> 307 /login, /api/runs -> 401.
 - Vercel env DATABASE_URL and DIRECT_URL added by user (dashboard; CLI in user PowerShell lacks vercel on PATH). Preview https://freshroots-demand-planning-4erhhedgq-milindmali1810s-projects.vercel.app: /api/health 200 ok, /api/runs 401 without login. Previews are behind Vercel Authentication: use `vercel curl <url>` (CLI generated a protection bypass token).
 - Phase 6: .github/workflows/ci.yml (lint, test, build) — first run on dev green. JSON logs for runs, decisions, guardrail halts.
@@ -25,7 +26,7 @@ Phases 4, 6, 7 done. Phase 5: all 3 env vars set in Vercel; preview verified (he
 Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. User logs in on the preview (Vercel-authenticated browser), runs the engine and approves one recommendation; then I delete the test rows (scripts via tsx, same as before). Put APP_PASSWORD in local .env.local too.
+1. User OK to merge dev -> main via PR (checkpoint A2.5); production deploy then builds (main deploy was Blocked by author email; fixed now).
 2. Raghav/Deepa review the assumptions table in README (esp. guardrail and Ganesh Chaturthi).
 3. Merge dev → main only with explicit user OK (checkpoint A2.5).
 
@@ -43,7 +44,7 @@ Nothing running. No dev server should be left on :3100.
 
 ## Waiting on me
 - Branch protection on `main` needs GitHub Pro or public repo.
-- Log in on the preview and do the smoke test. Set APP_PASSWORD in local .env.local. Reset Neon password.
+- OK to merge dev -> main. Set APP_PASSWORD in local .env.local. Reset the Neon password (exposed in chat) and update Vercel + .env.local.
 - Reset Neon neondb_owner password (it was pasted in chat), then update .env.local.
 - APP_PASSWORD must be set in .env.local (and Vercel) or login returns 503 NOT_CONFIGURED.
 
@@ -62,3 +63,7 @@ Nothing running. No dev server should be left on :3100.
 - Branch protection not set (see Waiting).
 - Guardrail as specified is almost inert: max order per SKU is 1.5 x Q_std, so total can only exceed 1.5x baseline via case-pack rounding. Raise with Raghav/Deepa (compare against something tighter?).
 - Exception rate is 0% on the seed data vs expected 15-20%.
+
+## Build checklist
+- [x] Phase 1 setup + GitHub  - [x] Phase 2 data + Neon  - [x] Phase 3 engine + API  - [x] Phase 4 frontend
+- [x] Phase 5 Vercel preview (production pending merge)  - [x] Phase 6 CI  - [x] Phase 7 skills, rubrics, README
