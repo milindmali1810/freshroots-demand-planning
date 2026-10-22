@@ -3,9 +3,10 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phases 4, 6, 7 done. Phase 5 (Vercel): project linked; WAITING on user to add env vars in Vercel, then smoke-test the preview.
+Phases 4, 6, 7 done. Phase 5: preview deployed, DATABASE_URL + DIRECT_URL set in Vercel (Production+Preview, Secret); /api/health ok on preview; WAITING on APP_PASSWORD in Vercel, then login smoke test.
 
 ## Done
+- Vercel env DATABASE_URL and DIRECT_URL added by user (dashboard; CLI in user PowerShell lacks vercel on PATH). Preview https://freshroots-demand-planning-4erhhedgq-milindmali1810s-projects.vercel.app: /api/health 200 ok, /api/runs 401 without login. Previews are behind Vercel Authentication: use `vercel curl <url>` (CLI generated a protection bypass token).
 - Phase 6: .github/workflows/ci.yml (lint, test, build) — first run on dev green. JSON logs for runs, decisions, guardrail halts.
 - Phase 7: skills/ (5 playbooks + 3 rubrics) and full README written.
 - Phase 5 (partial): Vercel project freshroots-demand-planning created and linked to GitHub (milindmali1810s-projects). First preview was Blocked: commit author email not linked to a GitHub account; repo git email switched to GitHub noreply.
@@ -23,7 +24,7 @@ Phases 4, 6, 7 done. Phase 5 (Vercel): project linked; WAITING on user to add en
 Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. User adds DATABASE_URL, DIRECT_URL, APP_PASSWORD in Vercel (Preview and Production). Then redeploy dev and smoke-test the preview (login, run engine, approve one).
+1. User adds APP_PASSWORD in Vercel (Production+Preview, Secret). Then redeploy dev and smoke-test the preview with login: run engine, approve one. Then delete test rows.
 2. Raghav/Deepa review the assumptions table in README (esp. guardrail and Ganesh Chaturthi).
 3. Merge dev → main only with explicit user OK (checkpoint A2.5).
 
@@ -41,7 +42,7 @@ Nothing running. No dev server should be left on :3100.
 
 ## Waiting on me
 - Branch protection on `main` needs GitHub Pro or public repo.
-- Add Vercel env vars (DATABASE_URL pooled, DIRECT_URL direct, APP_PASSWORD) via dashboard.
+- Add APP_PASSWORD in Vercel (and in local .env.local).
 - Reset Neon neondb_owner password (it was pasted in chat), then update .env.local.
 - APP_PASSWORD must be set in .env.local (and Vercel) or login returns 503 NOT_CONFIGURED.
 
