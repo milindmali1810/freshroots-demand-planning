@@ -3,9 +3,12 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phase 4 complete (frontend built and browser-tested); Phase 5 (Vercel deploy) next.
+Phases 4, 6, 7 done. Phase 5 (Vercel): project linked; WAITING on user to add env vars in Vercel, then smoke-test the preview.
 
 ## Done
+- Phase 6: .github/workflows/ci.yml (lint, test, build) — first run on dev green. JSON logs for runs, decisions, guardrail halts.
+- Phase 7: skills/ (5 playbooks + 3 rubrics) and full README written.
+- Phase 5 (partial): Vercel project freshroots-demand-planning created and linked to GitHub (milindmali1810s-projects). First preview was Blocked: commit author email not linked to a GitHub account; repo git email switched to GitHub noreply.
 - Phase 4: proxy.ts signed-cookie gate (APP_PASSWORD), /login, / (dashboard), /runs/[id], /exceptions (+ add E3 flag form), /skus/[code] (SVG charts), GET /api/skus/[code]. Browser-tested with a throwaway process-only password: login, run engine, approve SKU001, pre-placement PROCEED, SKU page. `npm run build`, eslint, tsc, 15 tests all clean. Test rows deleted afterwards (DB has 0 runs).
 - Phase 3: engine (src/lib/engine) + 15 Vitest tests passing (4 required examples + rules); service layer (src/lib/services); all 10 API routes; zod validation + { error: { code, message } } + JSON logs.
 - API smoke test (curl, local dev :3100) all passed: health 200; POST/GET runs 201/200, bad date/json 400, bad id 400, missing 404; recommendations filters 200, bad flag 400; exceptions 200; decision approve/override 201, no-qty approve 422, missing newQty 400, missing reason 400, repeat 409, unknown 404; preplacement 409 if pending, 201 PROCEED, HOLD after a new event flag; flags 201/400/404; metrics 200. Smoke rows deleted afterwards.
@@ -20,9 +23,9 @@ Phase 4 complete (frontend built and browser-tested); Phase 5 (Vercel deploy) ne
 Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. Phase 5: link + deploy to Vercel (MCP/CLI); set DATABASE_URL, DIRECT_URL, APP_PASSWORD in Vercel (user adds values).
-2. Phase 6: .github/workflows/ci.yml (npm ci, lint, test, build).
-3. Phase 7: skills/*.md, rubrics, full README.
+1. User adds DATABASE_URL, DIRECT_URL, APP_PASSWORD in Vercel (Preview and Production). Then redeploy dev and smoke-test the preview (login, run engine, approve one).
+2. Raghav/Deepa review the assumptions table in README (esp. guardrail and Ganesh Chaturthi).
+3. Merge dev → main only with explicit user OK (checkpoint A2.5).
 
 ## Decisions made
 - UI is light-theme only (globals.css); client components fetch the API with loading/error states; Suspense wrappers required by cacheComponents.
@@ -38,6 +41,7 @@ Nothing running. No dev server should be left on :3100.
 
 ## Waiting on me
 - Branch protection on `main` needs GitHub Pro or public repo.
+- Add Vercel env vars (DATABASE_URL pooled, DIRECT_URL direct, APP_PASSWORD) via dashboard.
 - Reset Neon neondb_owner password (it was pasted in chat), then update .env.local.
 - APP_PASSWORD must be set in .env.local (and Vercel) or login returns 503 NOT_CONFIGURED.
 
