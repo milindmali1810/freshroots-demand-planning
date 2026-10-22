@@ -3,9 +3,10 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-BUILD COMPLETE on dev. Preview smoke-tested end to end by the user (login, run engine, approve). Only open item: merge dev -> main (needs user OK, checkpoint A2.5).
+BUILD COMPLETE and MERGED to main (PR #1, 2026-10-22). Production deployment Ready; health ok; gate and login verified. Only the real-password production login test + test-row cleanup remain (user).
 
 ## Done
+- PR #1 merged to main by the user (auto-mode blocked my merge). Production https://freshroots-demand-planning-8j9myo1hk-milindmali1810s-projects.vercel.app Ready (48s build): /api/health ok, /api/runs 401, wrong password 401, / -> 307 /login. Public alias is behind Vercel Authentication (302): Raghav/procurement cannot open it until protection is relaxed or they are added.
 - Preview smoke test by user on Vercel: login ok, Run #3 (15 rows, same as local), SKU001 approved. Test rows deleted afterwards (DB: 0 runs; 15 SKUs, 240 sales, 15 inventory intact).
 - APP_PASSWORD added in Vercel (Production+Preview, Secret). Preview https://freshroots-demand-planning-7dwd5bafk-milindmali1810s-projects.vercel.app: /api/health ok, POST /api/login wrong pw -> 401 WRONG_PASSWORD (proves var is set), / -> 307 /login, /api/runs -> 401.
 - Vercel env DATABASE_URL and DIRECT_URL added by user (dashboard; CLI in user PowerShell lacks vercel on PATH). Preview https://freshroots-demand-planning-4erhhedgq-milindmali1810s-projects.vercel.app: /api/health 200 ok, /api/runs 401 without login. Previews are behind Vercel Authentication: use `vercel curl <url>` (CLI generated a protection bypass token).
@@ -26,7 +27,7 @@ BUILD COMPLETE on dev. Preview smoke-tested end to end by the user (login, run e
 Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. User OK to merge dev -> main via PR (checkpoint A2.5); production deploy then builds (main deploy was Blocked by author email; fixed now).
+1. User logs in on production, runs engine, approves one row; then delete test rows. Decide Vercel Deployment Protection for production (team-only today).
 2. Raghav/Deepa review the assumptions table in README (esp. guardrail and Ganesh Chaturthi).
 3. Merge dev → main only with explicit user OK (checkpoint A2.5).
 
