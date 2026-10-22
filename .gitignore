@@ -47,3 +47,5 @@ data-quality.md
 /src/generated/prisma
 
 /src/generated
+.vercel
+.env*
