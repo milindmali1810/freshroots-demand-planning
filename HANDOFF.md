@@ -3,9 +3,10 @@
 **Last updated:** 2026-10-22
 
 ## Current position
-Phases 4, 6, 7 done. Phase 5: preview deployed, DATABASE_URL + DIRECT_URL set in Vercel (Production+Preview, Secret); /api/health ok on preview; WAITING on APP_PASSWORD in Vercel, then login smoke test.
+Phases 4, 6, 7 done. Phase 5: all 3 env vars set in Vercel; preview verified (health ok, login rejects wrong password, gate redirects/401s). WAITING on user to log in on the preview and run engine + approve one (I may not enter the real password).
 
 ## Done
+- APP_PASSWORD added in Vercel (Production+Preview, Secret). Preview https://freshroots-demand-planning-7dwd5bafk-milindmali1810s-projects.vercel.app: /api/health ok, POST /api/login wrong pw -> 401 WRONG_PASSWORD (proves var is set), / -> 307 /login, /api/runs -> 401.
 - Vercel env DATABASE_URL and DIRECT_URL added by user (dashboard; CLI in user PowerShell lacks vercel on PATH). Preview https://freshroots-demand-planning-4erhhedgq-milindmali1810s-projects.vercel.app: /api/health 200 ok, /api/runs 401 without login. Previews are behind Vercel Authentication: use `vercel curl <url>` (CLI generated a protection bypass token).
 - Phase 6: .github/workflows/ci.yml (lint, test, build) — first run on dev green. JSON logs for runs, decisions, guardrail halts.
 - Phase 7: skills/ (5 playbooks + 3 rubrics) and full README written.
@@ -24,7 +25,7 @@ Phases 4, 6, 7 done. Phase 5: preview deployed, DATABASE_URL + DIRECT_URL set in
 Nothing running. No dev server should be left on :3100.
 
 ## Next 3 actions
-1. User adds APP_PASSWORD in Vercel (Production+Preview, Secret). Then redeploy dev and smoke-test the preview with login: run engine, approve one. Then delete test rows.
+1. User logs in on the preview (Vercel-authenticated browser), runs the engine and approves one recommendation; then I delete the test rows (scripts via tsx, same as before). Put APP_PASSWORD in local .env.local too.
 2. Raghav/Deepa review the assumptions table in README (esp. guardrail and Ganesh Chaturthi).
 3. Merge dev → main only with explicit user OK (checkpoint A2.5).
 
@@ -42,7 +43,7 @@ Nothing running. No dev server should be left on :3100.
 
 ## Waiting on me
 - Branch protection on `main` needs GitHub Pro or public repo.
-- Add APP_PASSWORD in Vercel (and in local .env.local).
+- Log in on the preview and do the smoke test. Set APP_PASSWORD in local .env.local. Reset Neon password.
 - Reset Neon neondb_owner password (it was pasted in chat), then update .env.local.
 - APP_PASSWORD must be set in .env.local (and Vercel) or login returns 503 NOT_CONFIGURED.
 
