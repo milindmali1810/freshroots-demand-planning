@@ -9,6 +9,9 @@ interface Rec {
   skuCode: string;
   flag: string;
   weeksOfCover: number;
+  inventoryPosition: number;
+  avg4: number;
+  avg12: number;
   qty: number | null;
   reason: string;
   status: string;
@@ -157,6 +160,8 @@ export function RunView({ id }: { id: string }) {
             <tr>
               <th className="p-2">SKU</th>
               <th className="p-2">Flag</th>
+              <th className="p-2 text-right" title="On hand plus on order. On-order is not in the data, so this is on-hand stock.">Stock (units)</th>
+              <th className="p-2 text-right" title="Average units sold per week: last 4 weeks / last 12 weeks">Sales/wk (4w / 12w)</th>
               <th className="p-2 text-right">Cover (wks)</th>
               <th className="p-2 text-right">Qty</th>
               <th className="p-2">Why</th>
@@ -167,7 +172,7 @@ export function RunView({ id }: { id: string }) {
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-4 text-center text-gray-500">
+                <td colSpan={9} className="p-4 text-center text-gray-500">
                   {recommendations.length === 0 ? "No recommendations were saved for this run." : "No recommendations match these filters."}
                 </td>
               </tr>
@@ -186,6 +191,10 @@ export function RunView({ id }: { id: string }) {
                   </td>
                   <td className="p-2">
                     <FlagBadge flag={r.flag} />
+                  </td>
+                  <td className="p-2 text-right">{r.inventoryPosition.toLocaleString("en-IN")}</td>
+                  <td className="p-2 text-right whitespace-nowrap">
+                    {Math.round(r.avg4)} / {Math.round(r.avg12)}
                   </td>
                   <td className="p-2 text-right">{r.weeksOfCover >= 9999 ? "∞" : r.weeksOfCover.toFixed(1)}</td>
                   <td className="p-2 text-right">{r.qty ?? "—"}</td>
@@ -213,7 +222,7 @@ export function RunView({ id }: { id: string }) {
                 </tr>
                 {active?.id === r.id && (
                   <tr className="bg-gray-50">
-                    <td colSpan={7} className="space-y-2 p-3">
+                    <td colSpan={9} className="space-y-2 p-3">
                       <div className="flex flex-wrap items-end gap-3">
                         <strong className="text-sm">{active.action} {r.skuCode}</strong>
                         <label className="text-sm">
@@ -247,7 +256,7 @@ export function RunView({ id }: { id: string }) {
                 )}
                 {checks[r.id] != null && (
                   <tr className="bg-gray-50">
-                    <td colSpan={7} className="p-3 text-sm">
+                    <td colSpan={9} className="p-3 text-sm">
                       <CheckResult value={checks[r.id]} />
                     </td>
                   </tr>
