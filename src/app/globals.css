@@ -1,22 +1,83 @@
 @import "tailwindcss";
 
-/* Light theme only: a calm, high-contrast tool for planners. Blue = actions and links;
-   red / amber / green / purple are reserved for status. */
+/* Black theme. The components use Tailwind's slate scale and status tints, so the palette is remapped
+   here once: slate runs from near-black surfaces (50-200) to light text (800-900), and each status
+   colour gets a dark tint (50-300) with light text (800-900). Blue-500..800, red-600 etc. stay bright
+   enough to read on black. White text on filled buttons is untouched. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
-@theme inline {
+@theme {
+  --color-slate-50: #131316;
+  --color-slate-100: #1a1a1e;
+  --color-slate-200: #2a2a30;
+  --color-slate-300: #3a3a42;
+  --color-slate-400: #6e6e78;
+  --color-slate-500: #8d8d98;
+  --color-slate-600: #a8a8b3;
+  --color-slate-700: #c8c8d1;
+  --color-slate-800: #e4e4e9;
+  --color-slate-900: #f5f5f7;
+
+  --color-red-50: #2a1214;
+  --color-red-100: #3b1519;
+  --color-red-300: #7f2a30;
+  --color-red-400: #f87171;
+  --color-red-900: #fecaca;
+
+  --color-amber-50: #2a1e0a;
+  --color-amber-100: #3b2a0c;
+  --color-amber-300: #7a5412;
+  --color-amber-400: #fbbf24;
+  --color-amber-900: #fde68a;
+
+  --color-yellow-100: #38310a;
+  --color-yellow-900: #fef08a;
+
+  --color-emerald-50: #0c2419;
+  --color-emerald-100: #0f2f20;
+  --color-emerald-300: #1f6b49;
+  --color-emerald-400: #34d399;
+  --color-emerald-900: #a7f3d0;
+
+  --color-blue-50: #0e1a33;
+  --color-blue-100: #14264d;
+  --color-blue-200: #1d3a75;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-900: #bfdbfe;
+
+  --color-purple-100: #2b1650;
+  --color-purple-900: #e9d5ff;
+
   --font-sans: var(--font-fira-sans);
   --font-mono: var(--font-fira-code);
 }
 
 body {
-  background: #f8fafc;
-  color: #0f172a;
+  background: #09090b;
+  color: #f5f5f7;
   font-family: var(--font-fira-sans), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Cards, header and inputs sit one step above the black page. White fill utilities map to this surface. */
+.bg-white {
+  background-color: #111114;
+}
+.bg-white\/95 {
+  background-color: rgb(17 17 20 / 0.95);
+}
+input,
+select,
+textarea {
+  background-color: #0c0c0f;
+  color: #f5f5f7;
+}
+::placeholder {
+  color: #6e6e78;
 }
 
 button,
@@ -30,7 +91,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 2px solid #1e40af;
+  outline: 2px solid #60a5fa;
   outline-offset: 2px;
 }
 

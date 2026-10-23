@@ -25,8 +25,8 @@ function LineChart({ points, reference, referenceLabel, yLabel }: { points: { la
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={yLabel} className="w-full">
       {ticks.map((t) => (
         <g key={t}>
-          <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#e5e7eb" />
-          <text x={pad.l - 6} y={y(t) + 4} textAnchor="end" fontSize="10" fill="#6b7280">
+          <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#2a2a30" />
+          <text x={pad.l - 6} y={y(t) + 4} textAnchor="end" fontSize="10" fill="#a8a8b3">
             {Math.round(t * 10) / 10}
           </text>
         </g>
@@ -34,19 +34,19 @@ function LineChart({ points, reference, referenceLabel, yLabel }: { points: { la
       {reference != null && (
         <g>
           <line x1={pad.l} x2={W - pad.r} y1={y(reference)} y2={y(reference)} stroke="#d97706" strokeDasharray="5 4" />
-          <text x={W - pad.r} y={y(reference) - 4} textAnchor="end" fontSize="10" fill="#b45309">
+          <text x={W - pad.r} y={y(reference) - 4} textAnchor="end" fontSize="10" fill="#fbbf24">
             {referenceLabel}
           </text>
         </g>
       )}
-      <path d={path} fill="none" stroke="#1e40af" strokeWidth="2" />
+      <path d={path} fill="none" stroke="#60a5fa" strokeWidth="2" />
       {points.map((p, i) => (
-        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#1e40af">
+        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#60a5fa">
           <title>{`${p.label}: ${Math.round(p.value * 10) / 10}`}</title>
         </circle>
       ))}
       {points.map((p, i) => (i % Math.ceil(points.length / 8) === 0 ? (
-        <text key={p.label} x={x(i)} y={H - 8} textAnchor="middle" fontSize="10" fill="#6b7280">
+        <text key={p.label} x={x(i)} y={H - 8} textAnchor="middle" fontSize="10" fill="#a8a8b3">
           {p.label.slice(5)}
         </text>
       ) : null))}
@@ -67,7 +67,7 @@ export function SkuView({ code }: { code: string }) {
 
   return (
     <div className="space-y-4">
-      <Link href="/" className="text-sm text-blue-800 underline">
+      <Link href="/" className="text-sm text-blue-400 underline">
         ← Dashboard
       </Link>
       <div>
@@ -120,7 +120,7 @@ export function SkuView({ code }: { code: string }) {
                 {history.map((h) => (
                   <tr key={h.runId} className="border-t border-gray-100">
                     <td className="py-1">
-                      <Link href={`/runs/${h.runId}`} className="text-blue-800 underline">
+                      <Link href={`/runs/${h.runId}`} className="text-blue-400 underline">
                         #{h.runId}
                       </Link>
                     </td>

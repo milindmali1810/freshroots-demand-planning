@@ -75,7 +75,7 @@ export function ExceptionsView() {
                 <ul className="divide-y divide-gray-100 text-sm">
                   {items.map((x) => (
                     <li key={x.id} className="py-2">
-                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-blue-800 underline">
+                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-blue-400 underline">
                         {x.skuCode}
                       </Link>{" "}
                       <span className="text-slate-600">{x.sku.name}</span>
