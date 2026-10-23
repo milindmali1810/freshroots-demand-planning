@@ -39,9 +39,9 @@ function LineChart({ points, reference, referenceLabel, yLabel }: { points: { la
           </text>
         </g>
       )}
-      <path d={path} fill="none" stroke="#15803d" strokeWidth="2" />
+      <path d={path} fill="none" stroke="#1e40af" strokeWidth="2" />
       {points.map((p, i) => (
-        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#15803d">
+        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#1e40af">
           <title>{`${p.label}: ${Math.round(p.value * 10) / 10}`}</title>
         </circle>
       ))}
@@ -67,14 +67,14 @@ export function SkuView({ code }: { code: string }) {
 
   return (
     <div className="space-y-4">
-      <Link href="/" className="text-sm text-green-800 underline">
+      <Link href="/" className="text-sm text-blue-800 underline">
         ← Dashboard
       </Link>
       <div>
         <h1 className="text-2xl font-bold">
           {sku.code} — {sku.name}
         </h1>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-slate-600">
           {sku.category} · {sku.isPerishable ? "perishable" : "non-perishable"}
           {sku.primaryDistributor ? ` · ${sku.primaryDistributor.name} (${sku.primaryDistributor.region})` : ""}
           {sku.standardReorderQty != null ? ` · file standard reorder qty ${sku.standardReorderQty}` : ""}
@@ -84,30 +84,30 @@ export function SkuView({ code }: { code: string }) {
       <div className="grid gap-4 md:grid-cols-3">
         <Card title="AVG12">
           <p className="text-2xl font-bold">{Math.round(avg12 * 10) / 10}</p>
-          <p className="text-sm text-gray-600">units per week, last 12 weeks</p>
+          <p className="text-sm text-slate-600">units per week, last 12 weeks</p>
         </Card>
         <Card title="AVG4">
           <p className="text-2xl font-bold">{Math.round(avg4 * 10) / 10}</p>
-          <p className="text-sm text-gray-600">units per week, last 4 weeks</p>
+          <p className="text-sm text-slate-600">units per week, last 4 weeks</p>
         </Card>
         <Card title="On hand">
           <p className="text-2xl font-bold">{inventory?.onHand ?? "n/a"}</p>
-          <p className="text-sm text-gray-600">{inventory ? `as of ${inventory.asOfDate.slice(0, 10)}${inventory.location ? `, ${inventory.location}` : ""} (on-order unavailable)` : "no snapshot"}</p>
+          <p className="text-sm text-slate-600">{inventory ? `as of ${inventory.asOfDate.slice(0, 10)}${inventory.location ? `, ${inventory.location}` : ""} (on-order unavailable)` : "no snapshot"}</p>
         </Card>
       </div>
 
       <Card title="Weekly sales (units)">
-        {sales.length === 0 ? <p className="text-gray-500">No sales history.</p> : <LineChart points={sales.map((s) => ({ label: s.weekStart, value: s.units }))} reference={avg12} referenceLabel="AVG12" yLabel="Weekly sales" />}
+        {sales.length === 0 ? <p className="text-slate-600">No sales history.</p> : <LineChart points={sales.map((s) => ({ label: s.weekStart, value: s.units }))} reference={avg12} referenceLabel="AVG12" yLabel="Weekly sales" />}
       </Card>
 
       <Card title="Weeks of cover at each run">
         {history.length === 0 ? (
-          <p className="text-gray-500">No runs yet.</p>
+          <p className="text-slate-600">No runs yet.</p>
         ) : (
           <>
             <LineChart points={history.map((h) => ({ label: h.runDate, value: Math.min(h.weeksOfCover, 100) }))} yLabel="Weeks of cover" />
             <table className="mt-2 w-full text-left text-sm">
-              <thead className="text-xs uppercase text-gray-500">
+              <thead className="text-xs uppercase text-slate-600">
                 <tr>
                   <th className="py-1">Run</th>
                   <th>Date</th>
@@ -120,7 +120,7 @@ export function SkuView({ code }: { code: string }) {
                 {history.map((h) => (
                   <tr key={h.runId} className="border-t border-gray-100">
                     <td className="py-1">
-                      <Link href={`/runs/${h.runId}`} className="text-green-800 underline">
+                      <Link href={`/runs/${h.runId}`} className="text-blue-800 underline">
                         #{h.runId}
                       </Link>
                     </td>

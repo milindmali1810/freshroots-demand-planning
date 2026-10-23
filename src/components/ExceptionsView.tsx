@@ -54,14 +54,14 @@ export function ExceptionsView() {
     }
   }
 
-  const input = "mt-1 block w-full rounded border border-gray-300 px-2 py-1 text-sm";
+  const input = "mt-1 block w-full rounded border border-slate-300 px-2 py-1 text-sm";
   const grouped = new Map<string, Ex[]>();
   for (const x of data?.exceptions ?? []) grouped.set(x.code, [...(grouped.get(x.code) ?? []), x]);
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Exceptions for Raghav</h1>
-      <p className="text-sm text-gray-600">These SKUs need judgment. The engine gives no automatic quantity for them.</p>
+      <p className="text-sm text-slate-600">These SKUs need judgment. The engine gives no automatic quantity for them.</p>
 
       {loading && !data ? <Loading /> : error ? <ErrorBox message={error} onRetry={reload} /> : (
         <>
@@ -75,10 +75,10 @@ export function ExceptionsView() {
                 <ul className="divide-y divide-gray-100 text-sm">
                   {items.map((x) => (
                     <li key={x.id} className="py-2">
-                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-green-800 underline">
+                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-blue-800 underline">
                         {x.skuCode}
                       </Link>{" "}
-                      <span className="text-gray-500">{x.sku.name}</span>
+                      <span className="text-slate-600">{x.sku.name}</span>
                       <div>{x.detail}</div>
                     </li>
                   ))}
@@ -116,7 +116,7 @@ export function ExceptionsView() {
             <input required value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className={input} />
           </label>
           <div className="md:col-span-3">
-            <button disabled={saving} className="rounded bg-green-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50">
+            <button disabled={saving} className="rounded bg-blue-800 px-4 py-2 text-sm font-medium text-white disabled:opacity-50">
               {saving ? "Saving…" : "Save flag"}
             </button>
           </div>
