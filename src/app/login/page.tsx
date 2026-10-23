@@ -26,13 +26,13 @@ export default function LoginPage() {
 
   return (
     <form onSubmit={submit} className="mx-auto mt-16 max-w-sm space-y-4 rounded border border-slate-200 bg-white p-6 shadow-sm">
-      <h1 className="text-xl font-bold text-blue-400">Freshroots Demand Planning</h1>
+      <h1 className="text-xl font-bold text-lime-300">Freshroots Demand Planning</h1>
       <label className="block text-sm">
         Password
         <input type="password" autoFocus value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
       </label>
       {error && <ErrorBox message={error} />}
-      <button disabled={busy || !password} className="w-full rounded bg-blue-800 px-4 py-2 font-medium text-white hover:bg-blue-900 disabled:opacity-50">
+      <button disabled={busy || !password} className="neon-btn w-full rounded-md px-4 py-2 disabled:opacity-50">
         {busy ? "Signing in…" : "Sign in"}
       </button>
     </form>

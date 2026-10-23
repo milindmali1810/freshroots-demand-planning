@@ -75,7 +75,7 @@ export function ExceptionsView() {
                 <ul className="divide-y divide-gray-100 text-sm">
                   {items.map((x) => (
                     <li key={x.id} className="py-2">
-                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-blue-400 underline">
+                      <Link href={`/skus/${x.skuCode}`} className="font-medium text-lime-300 underline">
                         {x.skuCode}
                       </Link>{" "}
                       <span className="text-slate-600">{x.sku.name}</span>
@@ -116,7 +116,7 @@ export function ExceptionsView() {
             <input required value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className={input} />
           </label>
           <div className="md:col-span-3">
-            <button disabled={saving} className="rounded bg-blue-800 px-4 py-2 text-sm font-medium text-white disabled:opacity-50">
+            <button disabled={saving} className="neon-btn rounded-md px-4 py-2 text-sm disabled:opacity-50">
               {saving ? "Saving…" : "Save flag"}
             </button>
           </div>
