@@ -131,7 +131,7 @@ export function RunView({ id }: { id: string }) {
       >
         {value && <span className={`h-2 w-2 rounded-full ${FLAG_STYLE[value].dot}`} aria-hidden="true" />}
         {label}
-        <span className={`font-mono text-xs ${on ? "text-blue-100" : "text-slate-600"}`}>{count}</span>
+        <span className={`font-mono text-xs ${on ? "text-white/80" : "text-slate-600"}`}>{count}</span>
       </button>
     );
   };
@@ -140,7 +140,7 @@ export function RunView({ id }: { id: string }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <Link href="/" className="text-sm font-medium text-blue-800 hover:underline">
+          <Link href="/" className="text-sm font-medium text-blue-400 hover:underline">
             ← Dashboard
           </Link>
           <h1 className="text-2xl font-bold">
@@ -211,7 +211,7 @@ export function RunView({ id }: { id: string }) {
               <Fragment key={r.id}>
                 <tr className={`border-t border-slate-100 border-l-4 align-top transition-colors hover:bg-slate-50/70 ${FLAG_STYLE[r.flag]?.accent ?? ""}`}>
                   <td className="max-w-sm p-3">
-                    <Link href={`/skus/${r.skuCode}`} className="font-semibold text-blue-800 hover:underline">
+                    <Link href={`/skus/${r.skuCode}`} className="font-semibold text-blue-400 hover:underline">
                       {r.skuCode}
                     </Link>{" "}
                     <span className="text-slate-800">{r.sku.name}</span>
@@ -238,7 +238,7 @@ export function RunView({ id }: { id: string }) {
                         <button disabled={r.qty == null} title={r.qty == null ? "No quantity to approve" : ""} onClick={() => open(r, "APPROVE")} className="rounded-md bg-emerald-700 px-2.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-800 disabled:opacity-40">
                           Approve
                         </button>
-                        <button onClick={() => open(r, "OVERRIDE")} className="rounded-md border border-blue-800 px-2.5 py-1.5 text-xs font-semibold text-blue-900 transition-colors hover:bg-blue-50">
+                        <button onClick={() => open(r, "OVERRIDE")} className="rounded-md border border-blue-500 px-2.5 py-1.5 text-xs font-semibold text-blue-300 transition-colors hover:bg-slate-100">
                           Override
                         </button>
                         <button onClick={() => open(r, "REJECT")} className="rounded-md border border-slate-400 px-2.5 py-1.5 text-xs font-semibold text-slate-800 transition-colors hover:bg-slate-100">

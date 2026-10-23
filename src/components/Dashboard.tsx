@@ -127,7 +127,7 @@ export function Dashboard() {
           <Card
             title={`Run #${latest.id} · week of ${prettyDate(latest.runDate)}`}
             action={
-              <Link href={`/runs/${latest.id}`} className="text-sm font-medium text-blue-800 hover:underline">
+              <Link href={`/runs/${latest.id}`} className="text-sm font-medium text-blue-400 hover:underline">
                 Open full table →
               </Link>
             }
@@ -155,7 +155,7 @@ export function Dashboard() {
           </Card>
 
           {latestId && (
-            <Card title="Needs your attention" action={attention.length > 8 ? <Link href={`/runs/${latestId}`} className="text-sm font-medium text-blue-800 hover:underline">View all {attention.length} →</Link> : undefined}>
+            <Card title="Needs your attention" action={attention.length > 8 ? <Link href={`/runs/${latestId}`} className="text-sm font-medium text-blue-400 hover:underline">View all {attention.length} →</Link> : undefined}>
               {detail.error ? (
                 <ErrorBox message={detail.error} onRetry={detail.reload} />
               ) : detail.loading ? (
@@ -182,7 +182,7 @@ export function Dashboard() {
                       {attention.slice(0, 8).map((r) => (
                         <tr key={r.id} className={`border-b border-slate-100 border-l-4 ${FLAG_STYLE[r.flag]?.accent ?? ""}`}>
                           <td className="py-2 pl-3 pr-3">
-                            <Link href={`/skus/${r.skuCode}`} className="font-semibold text-blue-800 hover:underline">
+                            <Link href={`/skus/${r.skuCode}`} className="font-semibold text-blue-400 hover:underline">
                               {r.skuCode}
                             </Link>
                             <div className="text-xs text-slate-600">{r.sku.name}</div>
@@ -213,10 +213,10 @@ export function Dashboard() {
           <ul className="divide-y divide-slate-100 text-sm">
             {runs.data!.runs.slice(0, 6).map((r) => (
               <li key={r.id} className="flex items-center justify-between py-2">
-                <Link href={`/runs/${r.id}`} className="font-medium text-blue-800 hover:underline">
+                <Link href={`/runs/${r.id}`} className="font-medium text-blue-400 hover:underline">
                   Run #{r.id} · week of {prettyDate(r.runDate)}
                 </Link>
-                <span className={r.status === "HALTED" ? "font-medium text-red-700" : "text-slate-600"}>{r.status === "HALTED" ? "Halted" : "Completed"}</span>
+                <span className={r.status === "HALTED" ? "font-medium text-red-400" : "text-slate-600"}>{r.status === "HALTED" ? "Halted" : "Completed"}</span>
               </li>
             ))}
           </ul>

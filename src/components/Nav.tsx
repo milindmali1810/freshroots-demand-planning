@@ -16,7 +16,7 @@ export function Nav() {
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
-      className={`border-b-2 px-1 py-4 text-sm font-medium transition-colors ${active ? "border-blue-800 text-blue-900" : "border-transparent text-slate-600 hover:text-slate-900"}`}
+      className={`border-b-2 px-1 py-4 text-sm font-medium transition-colors ${active ? "border-blue-400 text-blue-300" : "border-transparent text-slate-600 hover:text-slate-900"}`}
     >
       {label}
     </Link>

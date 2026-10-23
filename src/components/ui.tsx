@@ -89,7 +89,7 @@ export function Banner({ tone, children }: { tone: "red" | "amber" | "green" | "
 }
 
 export function Stat({ label, value, note, tone }: { label: string; value: ReactNode; note?: ReactNode; tone?: "red" | "amber" | "green" }) {
-  const color = tone === "red" ? "text-red-700" : tone === "amber" ? "text-amber-700" : tone === "green" ? "text-emerald-700" : "text-slate-900";
+  const color = tone === "red" ? "text-red-400" : tone === "amber" ? "text-amber-400" : tone === "green" ? "text-emerald-400" : "text-slate-900";
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">{label}</p>
