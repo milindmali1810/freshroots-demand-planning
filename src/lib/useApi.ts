@@ -20,11 +20,13 @@ interface State<T> {
   loading: boolean;
 }
 
-export function useApi<T>(url: string) {
+/** Fetch a URL on mount and when it changes. Pass null to wait (for a URL that depends on earlier data). */
+export function useApi<T>(url: string | null) {
   const [state, setState] = useState<State<T>>({ data: null, error: null, loading: true });
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
+    if (!url) return;
     let cancelled = false;
     apiFetch<T>(url)
       .then((data) => !cancelled && setState({ data, error: null, loading: false }))
