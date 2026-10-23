@@ -127,11 +127,11 @@ export function RunView({ id }: { id: string }) {
         key={value || "all"}
         onClick={() => setFlag(on ? "" : value)}
         aria-pressed={on}
-        className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors ${on ? "border-blue-800 bg-blue-800 text-white" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-50"}`}
+        className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors ${on ? "border-lime-400 bg-lime-400 font-semibold text-black" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-50"}`}
       >
         {value && <span className={`h-2 w-2 rounded-full ${FLAG_STYLE[value].dot}`} aria-hidden="true" />}
         {label}
-        <span className={`font-mono text-xs ${on ? "text-white/80" : "text-slate-600"}`}>{count}</span>
+        <span className={`font-mono text-xs ${on ? "text-black/70" : "text-slate-600"}`}>{count}</span>
       </button>
     );
   };
@@ -140,7 +140,7 @@ export function RunView({ id }: { id: string }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <Link href="/" className="text-sm font-medium text-blue-400 hover:underline">
+          <Link href="/" className="text-sm font-medium text-lime-300 hover:underline">
             ← Dashboard
           </Link>
           <h1 className="text-2xl font-bold">
@@ -211,7 +211,7 @@ export function RunView({ id }: { id: string }) {
               <Fragment key={r.id}>
                 <tr className={`border-t border-slate-100 border-l-4 align-top transition-colors hover:bg-slate-50/70 ${FLAG_STYLE[r.flag]?.accent ?? ""}`}>
                   <td className="max-w-sm p-3">
-                    <Link href={`/skus/${r.skuCode}`} className="font-semibold text-blue-400 hover:underline">
+                    <Link href={`/skus/${r.skuCode}`} className="font-semibold text-lime-300 hover:underline">
                       {r.skuCode}
                     </Link>{" "}
                     <span className="text-slate-800">{r.sku.name}</span>
@@ -235,10 +235,10 @@ export function RunView({ id }: { id: string }) {
                   <td className="whitespace-nowrap p-3">
                     {r.status === "PENDING" ? (
                       <div className="flex gap-1.5">
-                        <button disabled={r.qty == null} title={r.qty == null ? "No quantity to approve" : ""} onClick={() => open(r, "APPROVE")} className="rounded-md bg-emerald-700 px-2.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-800 disabled:opacity-40">
+                        <button disabled={r.qty == null} title={r.qty == null ? "No quantity to approve" : ""} onClick={() => open(r, "APPROVE")} className="rounded-md bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-500 disabled:opacity-40">
                           Approve
                         </button>
-                        <button onClick={() => open(r, "OVERRIDE")} className="rounded-md border border-blue-500 px-2.5 py-1.5 text-xs font-semibold text-blue-300 transition-colors hover:bg-slate-100">
+                        <button onClick={() => open(r, "OVERRIDE")} className="rounded-md border border-lime-500 px-2.5 py-1.5 text-xs font-semibold text-lime-300 transition-colors hover:bg-slate-100">
                           Override
                         </button>
                         <button onClick={() => open(r, "REJECT")} className="rounded-md border border-slate-400 px-2.5 py-1.5 text-xs font-semibold text-slate-800 transition-colors hover:bg-slate-100">
@@ -253,7 +253,7 @@ export function RunView({ id }: { id: string }) {
                   </td>
                 </tr>
                 {active?.id === r.id && (
-                  <tr className="bg-blue-50/60">
+                  <tr className="bg-lime-400/5">
                     <td colSpan={8} className="space-y-2 p-3">
                       <div className="flex flex-wrap items-end gap-3">
                         <strong className="text-sm">
@@ -277,7 +277,7 @@ export function RunView({ id }: { id: string }) {
                           Note
                           <input value={note} onChange={(e) => setNote(e.target.value)} className={`ml-2 w-64 ${field}`} />
                         </label>
-                        <button onClick={submit} disabled={busy || (active.action === "OVERRIDE" && newQty === "")} className="rounded-md bg-slate-900 px-3.5 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700 disabled:opacity-50">
+                        <button onClick={submit} disabled={busy || (active.action === "OVERRIDE" && newQty === "")} className="neon-btn rounded-md px-3.5 py-1.5 text-sm disabled:opacity-50">
                           {busy ? "Saving…" : "Confirm"}
                         </button>
                         <button onClick={() => setActive(null)} className="text-sm text-slate-700 underline">

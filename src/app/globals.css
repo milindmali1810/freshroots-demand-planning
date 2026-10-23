@@ -1,24 +1,23 @@
 @import "tailwindcss";
 
-/* Black theme. The components use Tailwind's slate scale and status tints, so the palette is remapped
-   here once: slate runs from near-black surfaces (50-200) to light text (800-900), and each status
-   colour gets a dark tint (50-300) with light text (800-900). Blue-500..800, red-600 etc. stay bright
-   enough to read on black. White text on filled buttons is untouched. */
+/* Black + neon-lime theme. The components use Tailwind's slate scale and status tints, so the palette is
+   remapped once: slate runs from green-tinted near-black surfaces (50-300) to light text (400-900), and
+   each status colour gets a dark tint with light text. The glow is decoration; text stays above 4.5:1. */
 :root {
   color-scheme: dark;
 }
 
 @theme {
-  --color-slate-50: #131316;
-  --color-slate-100: #1a1a1e;
-  --color-slate-200: #2a2a30;
-  --color-slate-300: #3a3a42;
-  --color-slate-400: #6e6e78;
-  --color-slate-500: #8d8d98;
-  --color-slate-600: #a8a8b3;
-  --color-slate-700: #c8c8d1;
-  --color-slate-800: #e4e4e9;
-  --color-slate-900: #f5f5f7;
+  --color-slate-50: #0d140b;
+  --color-slate-100: #121b0f;
+  --color-slate-200: #1f3315;
+  --color-slate-300: #2f4a21;
+  --color-slate-400: #6f7a68;
+  --color-slate-500: #8e9a86;
+  --color-slate-600: #a9b5a1;
+  --color-slate-700: #c9d3c2;
+  --color-slate-800: #e5ebe0;
+  --color-slate-900: #f4f8f0;
 
   --color-red-50: #2a1214;
   --color-red-100: #3b1519;
@@ -56,28 +55,45 @@
 }
 
 body {
-  background: #09090b;
-  color: #f5f5f7;
+  background:
+    radial-gradient(900px 480px at 85% -8%, rgba(132, 204, 22, 0.14), transparent 62%),
+    radial-gradient(700px 420px at -5% 18%, rgba(34, 197, 94, 0.09), transparent 60%), #040704;
+  background-attachment: fixed;
+  color: #f4f8f0;
   font-family: var(--font-fira-sans), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Cards, header and inputs sit one step above the black page. White fill utilities map to this surface. */
+/* Faint grid that drifts slowly behind everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(163, 230, 53, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(163, 230, 53, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse at 50% 0%, #000 25%, transparent 78%);
+  animation: grid-drift 18s linear infinite;
+}
+
+/* Surfaces that used a white fill sit one step above the black page. */
 .bg-white {
-  background-color: #111114;
+  background-color: #0a100a;
 }
 .bg-white\/95 {
-  background-color: rgb(17 17 20 / 0.95);
+  background-color: rgb(6 10 6 / 0.88);
 }
 input,
 select,
 textarea {
-  background-color: #0c0c0f;
-  color: #f5f5f7;
+  background-color: #070b06;
+  color: #f4f8f0;
 }
 ::placeholder {
-  color: #6e6e78;
+  color: #6f7a68;
 }
 
 button,
@@ -91,15 +107,187 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid #a3e635;
   outline-offset: 2px;
 }
 
+/* ---------- Neon cards and text ---------- */
+.neon-card {
+  position: relative;
+  border: 1px solid #1f3a12;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(14, 22, 10, 0.92), rgba(6, 10, 5, 0.94));
+  box-shadow: inset 0 0 26px rgba(132, 204, 22, 0.05), 0 8px 28px rgba(0, 0, 0, 0.55);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+.neon-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 12% auto 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(190, 242, 100, 0.7), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.neon-card:hover {
+  border-color: #4d7c0f;
+  box-shadow: inset 0 0 30px rgba(132, 204, 22, 0.09), 0 0 24px rgba(132, 204, 22, 0.2), 0 8px 28px rgba(0, 0, 0, 0.55);
+  transform: translateY(-2px);
+}
+.neon-text {
+  color: #d9f99d;
+  text-shadow: 0 0 16px rgba(163, 230, 53, 0.55);
+}
+.neon-label {
+  font-family: var(--font-fira-code), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a3e635;
+}
+.neon-btn {
+  background: #a3e635;
+  color: #0a1204;
+  font-weight: 600;
+  box-shadow: 0 0 18px rgba(163, 230, 53, 0.35);
+  transition:
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.neon-btn:hover:not(:disabled) {
+  background: #bef264;
+  box-shadow: 0 0 28px rgba(190, 242, 100, 0.55);
+  transform: translateY(-1px);
+}
+
+/* ---------- Effects ---------- */
+.fade-up {
+  animation: fadeup 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+.fade-in-slow {
+  animation: fadein 1.2s ease 0.5s both;
+}
+.grow-x {
+  transform-origin: left center;
+  animation: growx 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.grow-y {
+  transform-origin: center bottom;
+  animation: growy 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.spin-in {
+  animation: spinin 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: center;
+}
+.ring-fill {
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.live-dot {
+  animation: pulse-glow 2s ease-out infinite;
+}
+.glow-line {
+  filter: drop-shadow(0 0 5px rgba(163, 230, 53, 0.75));
+}
+.glow-soft {
+  filter: drop-shadow(0 0 7px rgba(163, 230, 53, 0.55));
+}
+.row-hover {
+  transition: background-color 0.2s ease;
+}
+.row-hover:hover {
+  background-color: rgba(132, 204, 22, 0.06);
+}
+
+@keyframes fadeup {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes growx {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes growy {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes spinin {
+  from {
+    opacity: 0;
+    transform: rotate(-110deg) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(163, 230, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(163, 230, 53, 0);
+  }
+}
+@keyframes grid-drift {
+  to {
+    background-position: 0 48px, 48px 0;
+  }
+}
+
+/* Reduced motion: no drifting grid, no pulsing, everything lands in its final state at once. */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
   ::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  body::before {
+    animation: none !important;
   }
 }

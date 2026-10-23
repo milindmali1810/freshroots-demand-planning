@@ -39,9 +39,9 @@ function LineChart({ points, reference, referenceLabel, yLabel }: { points: { la
           </text>
         </g>
       )}
-      <path d={path} fill="none" stroke="#60a5fa" strokeWidth="2" />
+      <path d={path} fill="none" stroke="#a3e635" strokeWidth="2" />
       {points.map((p, i) => (
-        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#60a5fa">
+        <circle key={p.label} cx={x(i)} cy={y(p.value)} r="3" fill="#a3e635">
           <title>{`${p.label}: ${Math.round(p.value * 10) / 10}`}</title>
         </circle>
       ))}
@@ -67,7 +67,7 @@ export function SkuView({ code }: { code: string }) {
 
   return (
     <div className="space-y-4">
-      <Link href="/" className="text-sm text-blue-400 underline">
+      <Link href="/" className="text-sm text-lime-300 underline">
         ← Dashboard
       </Link>
       <div>
@@ -120,7 +120,7 @@ export function SkuView({ code }: { code: string }) {
                 {history.map((h) => (
                   <tr key={h.runId} className="border-t border-gray-100">
                     <td className="py-1">
-                      <Link href={`/runs/${h.runId}`} className="text-blue-400 underline">
+                      <Link href={`/runs/${h.runId}`} className="text-lime-300 underline">
                         #{h.runId}
                       </Link>
                     </td>
