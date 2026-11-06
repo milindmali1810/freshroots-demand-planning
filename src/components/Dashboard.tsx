@@ -41,6 +41,11 @@ function mondayOfToday() {
   d.setDate(d.getDate() - dow);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
+const addDays = (iso: string, n: number) => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+};
 const prettyDate = (iso: string) => new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const bounds = (r: Rec) => (r.sku.isPerishable ? engineConfig.cover.perishable : engineConfig.cover.general);
 const short = (name: string) => name.replace(/^Freshroots\s+/, "");
@@ -65,7 +70,11 @@ export function Dashboard() {
   const detail = useApi<{ recommendations: Rec[] }>(latestId ? `/api/runs/${latestId}` : null);
   const overview = useApi<Overview>("/api/overview");
   const detailLoading = latestId != null && detail.loading;
-  const [runDate, setRunDate] = useState(mondayOfToday());
+  // Default run date: the first Monday after the last loaded sales week, so the run uses all the data.
+  // Until sales load, or if there are none, fall back to this week's Monday. The user can still change it.
+  const [runDateEdit, setRunDateEdit] = useState<string | null>(null);
+  const latestWeek = overview.data?.weekly[overview.data.weekly.length - 1]?.weekStart;
+  const runDate = runDateEdit ?? (latestWeek ? addDays(latestWeek, 7) : mondayOfToday());
   const [running, setRunning] = useState(false);
   const [runError, setRunError] = useState<string | null>(null);
 
@@ -153,7 +162,8 @@ export function Dashboard() {
         <div className="neon-card flex flex-wrap items-end gap-2 p-2">
           <label className="text-xs font-medium text-slate-600">
             Run date (a Monday)
-            <input type="date" value={runDate} onChange={(e) => setRunDate(e.target.value)} className={`mt-1 block ${field}`} />
+            <input type="date" value={runDate} onChange={(e) => setRunDateEdit(e.target.value)} className={`mt-1 block ${field}`} />
+            {latestWeek && <span className="mt-1 block text-[11px] font-normal text-slate-500">Sales data runs to the week of {prettyDate(latestWeek)}</span>}
           </label>
           <button onClick={runEngine} disabled={running || !runDate} className="neon-btn flex items-center gap-1.5 rounded-md px-4 py-2 text-sm disabled:opacity-50">
             <Icon name="zap" className="h-4 w-4" />
